@@ -23,6 +23,17 @@ for statement in statements:
     if statement.strip() != '':
         cur.execute(statement)
 
+with open('init_recipes.sql') as f:
+    sql_script = f.read()
+
+# Split the script into individual SQL statements
+statements = sql_script.split(';')
+
+# Execute each SQL statement
+for statement in statements:
+    if statement.strip() != '':
+        cur.execute(statement)
+
 # Commit and close cursor and connection
 conn.commit()
 

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    usrid INTEGER PRIMARY KEY AUTOINCREMENT,
+    usrid SERIAL PRIMARY KEY,
     usrname VARCHAR(20),
     pass VARCHAR(20),
     fridgelist TEXT[]
@@ -10,7 +10,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS recipes;
 
 CREATE TABLE recipes (
-    rid INTEGER PRIMARY KEY AUTOINCREMENT,
+    rid SERIAL INTEGER PRIMARY KEY,
     recipename VARCHAR,
     ingr TEXT[],
     instrlist TEXT[]
