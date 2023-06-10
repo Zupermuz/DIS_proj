@@ -1,20 +1,30 @@
-import sqlite3
+import os
+import psycopg2
 
-connection = sqlite3.connect('database.db')
+# Connect to database
+conn = psycopg2.connect(
+        host="localhost",
+        database="dis_db",
+        user=os.environ['DB_USERNAME'],
+        password=os.environ['DB_PASSWORD'])
 
+# Open cursor for db operations
+cur = conn.cursor()
 
+# Open schema.sql file
 with open('schema.sql') as f:
-    connection.executescript(f.read())
+     sql_script = f.read()
 
-cur = connection.cursor()
+# Split the script into individual SQL statements
+statements = sql_script.split(';')
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('First Post', 'Content for the first post')
-            )
+# Execute each SQL statement
+for statement in statements:
+    if statement.strip() != '':
+        cur.execute(statement)
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('Second Post', 'Content for the second post')
-            )
+# Commit and close cursor and connection
+conn.commit()
 
-connection.commit()
-connection.close()
+cur.close()
+conn.close()

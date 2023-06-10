@@ -1,8 +1,17 @@
-DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL
+CREATE TABLE users (
+    usrid INTEGER PRIMARY KEY AUTOINCREMENT,
+    usrname VARCHAR(20),
+    pass VARCHAR(20),
+    fridgelist TEXT[]
+);
+
+DROP TABLE IF EXISTS recipes;
+
+CREATE TABLE recipes (
+    rid INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipename VARCHAR,
+    ingr TEXT[],
+    instrlist TEXT[]
 );
