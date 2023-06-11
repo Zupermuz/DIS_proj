@@ -3,3 +3,5 @@ flask_login
 flask_bcrypt
 psycopg2
 werkzeug.security
+json
+uuid
