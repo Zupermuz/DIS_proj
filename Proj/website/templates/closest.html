@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+        <h1>Recipes that match your fridge:</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Dish</th>
+                <th>Link</th>
+                <th>You'll need to buy:</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for r in recipes %}
+                <tr>
+                  <td>{{ r[0] }} </td>
+                  <td> <a href="{{ r[2] }}"></a></td>
+                  <td>{{ r[1] | join(", ") }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
