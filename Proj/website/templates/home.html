@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+        <h1>Fridge overview</h1>
+        <h3>Ingredients:</h3>
+        <ul class="list-group">
+            {% for ingredient in ingredients %}
+                <li class="list-group-item">{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <form method="POST">
+            <div class="form-group">
+                <label for="ingredient">New Ingredient:</label>
+                <input type="text" class="form-control" id="ingredient" name="ingredient" placeholder="Enter ingredient">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Ingredient</button>
+        </form>
+{% endblock %}
