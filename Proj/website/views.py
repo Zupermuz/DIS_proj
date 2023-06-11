@@ -1,9 +1,27 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, redirect, render_template, request, flash, url_for
 from flask_login import login_required, current_user
+from .models import getUserDataById, ingr_add_command, ingr_remove_command
 
 views = Blueprint('views', __name__)
 
-@views.route('/')
-@login_required
+@views.route('/', methods=('GET', 'POST'))
+@views.route('/home', methods=('GET', 'POST'))
+#@login_required
 def home():
-    return render_template("home.html")
+    user_data = getUserDataById(1)
+    ingredients = user_data['ingr_list']
+
+    if request.method == 'POST':
+        ingr_to_add = request.form['ingr_to_add']
+        if not ingr_to_add:
+            flash('Type something!')
+        else:
+            ingr_add_command(1, ingr_to_add)
+            return redirect(url_for('views.home'))
+    return render_template("home.html", ingredients = ingredients)
+
+@views.route('/<int:id>/<ingr_to_remove>/ingr_remove', methods=('GET', 'POST'))
+def ingr_remove(id, ingr_to_remove):
+    ingr_remove_command(id, ingr_to_remove)
+    #flash('"{}" was successfully deleted!'.format(post['title']))
+    return redirect(url_for('views.home'))

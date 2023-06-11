@@ -66,4 +66,26 @@ def insertUser(user):
 
     conn.commit()
     cur.close()
+
+def ingr_add_command(user_id, ingr_to_add):
+    cur = conn.cursor()
+    sql = """
+    UPDATE users
+    SET fridgelist = ARRAY_APPEND(fridgelist, %s)
+    WHERE usrid=%s;
+    """
+    cur.execute(sql, (ingr_to_add,user_id))
+    conn.commit()
+    cur.close()
+
+def ingr_remove_command(user_id, ingr_to_remove):
+    cur = conn.cursor()
+    sql = """
+    Update users
+    SET fridgelist = ARRAY_REMOVE(fridgelist, %s)
+    WHERE usrid=%s;
+    """
+    cur.execute(sql, (ingr_to_remove,user_id))
+    conn.commit()
+    cur.close()
     

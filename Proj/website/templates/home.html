@@ -2,16 +2,27 @@
 {% block title %}Home{% endblock %}
 {% block content %}
         <h1>Fridge overview</h1>
-        <h3>Ingredients:</h3>
-        <ul class="list-group">
-            {% for ingredient in ingredients %}
-                <li class="list-group-item">{{ ingredient }}</li>
-            {% endfor %}
-        </ul>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Ingredients</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for ingredient in ingredients %}
+                <tr>
+                  <td>{{ ingredient }} </td>
+                  <td> <a href="{{ url_for('views.ingr_remove', id='1', ingr_to_remove=ingredient) }}">remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
         <form method="POST">
             <div class="form-group">
                 <label for="ingredient">New Ingredient:</label>
-                <input type="text" class="form-control" id="ingredient" name="ingredient" placeholder="Enter ingredient">
+                <input type="text" class="form-control" id="ingredient" name="ingr_to_add" placeholder="Enter ingredient">
             </div>
             <button type="submit" class="btn btn-primary">Add Ingredient</button>
         </form>
