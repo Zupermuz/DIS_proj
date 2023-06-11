@@ -54,8 +54,9 @@ def getUserByUsername(username):
     
     query = "SELECT * FROM users WHERE usrname = %s"
     cur.execute(query, (username,))
-    user = cur.fetchone()
-    
+    user_data = cur.fetchone()
+    user = User(user_data[1:])
+    user.id = user_data[0]
     cur.close()
     return user
 
