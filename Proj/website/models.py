@@ -8,9 +8,10 @@ import json
 
 @login_manager.user_loader
 def load_user(user_id):
+    #int_user_id = int(user_id)
     user_data = getUserDataById(user_id)
     if user_data:
-        return User(user_data['usrname'], user_data['password'], user_data['ingr_list'])
+        return User((user_data['id'], user_data['username'], user_data['password'], user_data['ingr_list']))
     return None
     
     
@@ -19,10 +20,10 @@ def load_user(user_id):
 
 class User(tuple, UserMixin):
     def __init__(self, usr_data):
-        self.id = None # This will be assigned by the database
-        self.username = usr_data[0]
-        self.password = usr_data[1]
-        self.ingr_list = json.dumps(usr_data[2]) if len(usr_data) > 2 else '[]'
+        self.id = usr_data[0] # This will be assigned by the database
+        self.username = usr_data[1]
+        self.password = usr_data[2]
+        self.ingr_list = json.dumps(usr_data[3]) if len(usr_data) > 2 else '[]'
     def get_id(self):
         return str(self.id)
     def get_ingr_list(self):
@@ -30,8 +31,9 @@ class User(tuple, UserMixin):
 
 def getUserDataById(user_id):
     cur = conn.cursor()
-    
-    query = "SELECT usrname, pass, fridgelist FROM users WHERE usrid = %s"
+    #if isinstance(user_id, str) and len(user_id)>1:
+     #   user_id = int(user_id[1])
+    query = "SELECT usrid, usrname, pass, fridgelist FROM users WHERE usrid = %s"
     cur.execute(query, (user_id,))
     
     user_data = cur.fetchone()
@@ -40,9 +42,10 @@ def getUserDataById(user_id):
     
     if user_data:
         return {
-            'username': user_data[0],
-            'password': user_data[1],
-            'ingr_list': user_data[2],
+            'id': user_data[0],
+            'username': user_data[1],
+            'password': user_data[2],
+            'ingr_list': user_data[3],
         }
     return None
 def getIdForNewUser(user):
@@ -50,7 +53,9 @@ def getIdForNewUser(user):
     
     query = "SELECT usrid FROM users WHERE usrname = %s"
     cur.execute(query, (user.username,))
+    print(user.username)
     id = cur.fetchone()
+    print(id)
     user.id = id
     cur.close()
 
@@ -61,11 +66,12 @@ def getUserByUsername(username):
     cur.execute(query, (username,))
     user_data = cur.fetchone()
     if user_data:
+        usrid = user_data[0]
         usrname = user_data[1]
         passwrd = user_data[2]
         ingrlist = user_data[3]
-        user = User((usrname, passwrd, ingrlist))
-        user.id = int(user_data[0])
+        user = User((usrid, usrname, passwrd, ingrlist))
+        #user.id = int(user_data[0])
         cur.close
         return user
     cur.close()
@@ -73,12 +79,12 @@ def getUserByUsername(username):
 
 def insertUser(user):
     cur = conn.cursor()
-    if user.ingr_list:
-        query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
-        cur.execute(query, (user.username, user.password, None))
-    else:
-        query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
-        cur.execute(query, (user.username, user.password, user.ingr_list))
+    # if user.ingr_list:
+    #     query = "INSERT INTO users (usrid, usrname, pass, fridgelist) VALUES (%s, %s, %s, %s)"
+    #     cur.execute(query, (user.id, user.username, user.password, None))
+    # else:
+    query = "INSERT INTO users (usrid, usrname, pass, fridgelist) VALUES (%s, %s, %s, (ARRAY[]::text[]))"
+    cur.execute(query, (user.id, user.username, user.password))
 
     conn.commit()
     cur.close()

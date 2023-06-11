@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    usrid SERIAL PRIMARY KEY,
+    usrid VARCHAR PRIMARY KEY,
     usrname VARCHAR(20),
     pass TEXT,
     fridgelist TEXT[]

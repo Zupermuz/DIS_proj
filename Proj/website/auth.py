@@ -1,3 +1,4 @@
+import uuid
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -47,7 +48,8 @@ def sign_up():
         elif len(password1) < 7:
             flash('Passwords must be more than 7 characters.', category='error')
         else:
-            new_user = User((username, generate_password_hash(password1, method='sha256')))
+            user_id = str(uuid.uuid4())
+            new_user = User((user_id, username, generate_password_hash(password1, method='sha256'),[]))
             insertUser(new_user)
             getIdForNewUser(new_user)
             login_user(new_user, remember=True)
