@@ -6,8 +6,7 @@ from website.init_db import set_and_init_db
 db = "dbname='dis_db' user = 'postgres' host = '127.0.0.1' password = 'dis'"
 
 # init database
-
-# set_and_init_db(db) # uncomment this for first run
+set_and_init_db(db) # uncomment this for first run
 set_db(db)
 
 if __name__ == '__main__':
