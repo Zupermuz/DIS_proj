@@ -8,7 +8,6 @@ import json
 
 @login_manager.user_loader
 def load_user(user_id):
-    #int_user_id = int(user_id)
     user_data = getUserDataById(user_id)
     if user_data:
         return User((user_data['id'], user_data['username'], user_data['password'], user_data['ingr_list']))
@@ -20,7 +19,7 @@ def load_user(user_id):
 
 class User(tuple, UserMixin):
     def __init__(self, usr_data):
-        self.id = usr_data[0] # This will be assigned by the database
+        self.id = usr_data[0]
         self.username = usr_data[1]
         self.password = usr_data[2]
         self.ingr_list = json.dumps(usr_data[3]) if len(usr_data) > 2 else '[]'
@@ -31,8 +30,6 @@ class User(tuple, UserMixin):
 
 def getUserDataById(user_id):
     cur = conn.cursor()
-    #if isinstance(user_id, str) and len(user_id)>1:
-     #   user_id = int(user_id[1])
     query = "SELECT usrid, usrname, pass, fridgelist FROM users WHERE usrid = %s"
     cur.execute(query, (user_id,))
     
@@ -69,7 +66,6 @@ def getUserByUsername(username):
         passwrd = user_data[2]
         ingrlist = user_data[3]
         user = User((usrid, usrname, passwrd, ingrlist))
-        #user.id = int(user_data[0])
         cur.close
         return user
     cur.close()
@@ -77,10 +73,6 @@ def getUserByUsername(username):
 
 def insertUser(user):
     cur = conn.cursor()
-    # if user.ingr_list:
-    #     query = "INSERT INTO users (usrid, usrname, pass, fridgelist) VALUES (%s, %s, %s, %s)"
-    #     cur.execute(query, (user.id, user.username, user.password, None))
-    # else:
     query = "INSERT INTO users (usrid, usrname, pass, fridgelist) VALUES (%s, %s, %s, (ARRAY[]::text[]))"
     cur.execute(query, (user.id, user.username, user.password))
 
@@ -91,10 +83,10 @@ def ingr_add_command(user_id, ingr_to_add):
     cur = conn.cursor()
     sql = """
     UPDATE users
-    SET fridgelist = ARRAY_APPEND(fridgelist, %s)
-    WHERE usrid=%s;
+    SET fridgelist = ARRAY_APPEND(fridgelist, LOWER(%s))
+    WHERE usrid=%s AND NOT fridgelist @> ARRAY[%s];;
     """
-    cur.execute(sql, (ingr_to_add,user_id))
+    cur.execute(sql, (ingr_to_add,user_id, ingr_to_add))
     conn.commit()
     cur.close()
 
