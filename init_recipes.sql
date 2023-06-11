@@ -1,5 +1,5 @@
 INSERT INTO recipes (recipename, ingr, instrlist) 
-VALUES (Broccolipie, ARRAY['egg', 'cream', 'pie dough', 'broccoli', 'shredded mozarella'],
+VALUES ('Broccolipie', ARRAY['egg', 'cream', 'pie dough', 'broccoli', 'shredded mozarella'],
         ARRAY['Wash and cut the broccoli into little stems','Boil the broccoli for 3 minutes'
         ,'mix egg, cream and cheese in a bowl, add salt and pepper',
         'Butter your tray and spread the dough. Take a fork and poke holes in the dough',

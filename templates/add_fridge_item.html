@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add food to fridge {% endblock %}</h1>
+    <form method="post">
+        <label for="content">Food:</label>
+        <br>
+        <textarea name="food"
+                  placeholder="Type name of food to add"
+                  rows="1"
+                  cols="60"
+                  >{{ request.form['food'] }}</textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

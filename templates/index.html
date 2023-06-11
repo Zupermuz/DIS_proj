@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} FridgeApp {% endblock %}</h1>
+    {% for book in books %}
+        <div class='book'>
+            <h3>Fridge</h3>
+        </div>
+    {% endfor %}
+{% endblock %}

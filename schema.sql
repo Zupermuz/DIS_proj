@@ -10,7 +10,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS recipes;
 
 CREATE TABLE recipes (
-    rid SERIAL INTEGER PRIMARY KEY,
+    rid SERIAL PRIMARY KEY,
     recipename VARCHAR,
     ingr TEXT[],
     instrlist TEXT[]
