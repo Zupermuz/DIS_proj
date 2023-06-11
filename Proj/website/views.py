@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, flash, url_for
 from flask_login import login_required, current_user
-from .models import getUserDataById, ingr_add_command, ingr_remove_command, User
+from .models import getUserDataById, ingr_add_command, ingr_remove_command, User, recipe_match_request
 
 views = Blueprint('views', __name__)
 
@@ -24,7 +24,11 @@ def home():
 @views.route('/<ingr_to_remove>/ingr_remove', methods=('GET', 'POST'))
 @login_required
 def ingr_remove(ingr_to_remove):
-    user_id = current_user.get_id()
-    ingr_remove_command(user_id, ingr_to_remove)
-    #flash('"{}" was successfully deleted!'.format(post['title']))
+    ingr_remove_command(current_user.get_id(), ingr_to_remove)
     return redirect(url_for('views.home'))
+
+@views.route('/matches')
+@login_required
+def matches():
+    data=recipe_match_request(current_user.get_id())
+    return render_template("matches.html", recipes = data)

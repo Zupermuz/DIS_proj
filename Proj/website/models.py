@@ -53,9 +53,7 @@ def getIdForNewUser(user):
     
     query = "SELECT usrid FROM users WHERE usrname = %s"
     cur.execute(query, (user.username,))
-    print(user.username)
     id = cur.fetchone()
-    print(id)
     user.id = id
     cur.close()
 
@@ -110,4 +108,14 @@ def ingr_remove_command(user_id, ingr_to_remove):
     cur.execute(sql, (ingr_to_remove,user_id))
     conn.commit()
     cur.close()
-    
+
+def recipe_match_request(user_id):
+    cur = conn.cursor()
+    sql = """
+    SELECT recipename, rcplink from recipes
+    WHERE ingr<@(SELECT fridgelist FROM users WHERE usrid=%s);
+    """
+    cur.execute(sql, (user_id,))
+    result = cur.fetchall()
+    cur.close()
+    return result
