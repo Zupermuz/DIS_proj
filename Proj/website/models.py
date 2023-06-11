@@ -1,6 +1,9 @@
 from . import conn, login_manager
 from flask_login import UserMixin
-from psycopg2 import sql
+from psycopg2 import sql, extensions
+import psycopg2
+
+import json
 
 
 @login_manager.user_loader
@@ -19,9 +22,11 @@ class User(tuple, UserMixin):
         self.id = None # This will be assigned by the database
         self.username = usr_data[0]
         self.password = usr_data[1]
-        self.ingr_list = usr_data[2]
+        self.ingr_list = json.dumps(usr_data[2]) if len(usr_data) > 2 else '[]'
     def get_id(self):
         return str(self.id)
+    def get_ingr_list(self):
+        return json.loads(self.ingr_list)
 
 def getUserDataById(user_id):
     cur = conn.cursor()
@@ -55,15 +60,25 @@ def getUserByUsername(username):
     query = "SELECT * FROM users WHERE usrname = %s"
     cur.execute(query, (username,))
     user_data = cur.fetchone()
-    user = User(user_data[1:])
-    user.id = user_data[0]
+    if user_data:
+        usrname = user_data[1]
+        passwrd = user_data[2]
+        ingrlist = user_data[3]
+        user = User((usrname, passwrd, ingrlist))
+        user.id = int(user_data[0])
+        cur.close
+        return user
     cur.close()
-    return user
+    return None
 
 def insertUser(user):
     cur = conn.cursor()
-    query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
-    cur.execute(query, (user.username, user.password, user.ingr_list))
+    if user.ingr_list:
+        query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
+        cur.execute(query, (user.username, user.password, None))
+    else:
+        query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
+        cur.execute(query, (user.username, user.password, user.ingr_list))
 
     conn.commit()
     cur.close()

@@ -47,7 +47,7 @@ def sign_up():
         elif len(password1) < 7:
             flash('Passwords must be more than 7 characters.', category='error')
         else:
-            new_user = User((username, generate_password_hash(password1, method='sha256'),[]))
+            new_user = User((username, generate_password_hash(password1, method='sha256')))
             insertUser(new_user)
             getIdForNewUser(new_user)
             login_user(new_user, remember=True)
