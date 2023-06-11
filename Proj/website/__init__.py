@@ -6,9 +6,13 @@ import psycopg2
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '98as89d7a078s9dg6a908sd7f6a8s7d9f6as67df'
 
+db = None
 # Set your own database 
 # Ex. db = "dbname='dis_db' user = 'user' host = '127.0.0.1' password = 'dis'"
-db = "dbname='dis_db' user = 'postgres' host = '127.0.0.1' password = 'dis'"
+def set_db(db_string):
+    global db
+    db = db_string
+
 conn = psycopg2.connect(db)
 
 # Open cursor for db operations
