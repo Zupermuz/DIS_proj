@@ -6,6 +6,9 @@ Created by hbd126 and pcd852
 This project is a website running python and Flask.
 The schema for the database is Registering users and recipes,
 and finding matches between users available ingredients and required ingredients of recipes.
+The numbers of recipes are small. To find matching recipes, create a user and input some of 
+following ingredients:
+['pizza dough', 'tomatoes', 'garlic', 'basil', 'olive oil', 'mozarella', 'tomato', 'garlic', 'parmesan', 'butter', 'olive oil', 'lemon', 'balsamic vinegar', 'honey', 'spaghetti', 'basil', 'potatoes', 'herbs', 'youghurt', 'lemon', 'olive oil', 'sausages', 'oil']
 
 ## Requirements:
 Run the code below to install the necessary modules.
