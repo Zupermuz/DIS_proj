@@ -41,7 +41,7 @@ def getUserDataById(user_id):
         }
     return None
 def getIdForNewUser(user):
-    cur = conn.cursor
+    cur = conn.cursor()
     
     query = "SELECT usrid FROM users WHERE username = %s"
     cur.execute(query, (user.username,))
@@ -50,7 +50,7 @@ def getIdForNewUser(user):
     cur.close()
 
 def getUserByUsername(username):
-    cur = conn.cursor
+    cur = conn.cursor()
     
     query = "SELECT * FROM users WHERE username = %s"
     cur.execute(query, (username,))
@@ -60,7 +60,7 @@ def getUserByUsername(username):
     return user
 
 def insertUser(user):
-    cur = conn.cursor
+    cur = conn.cursor()
     query = "INSERT INTO users (usrname, pass, fridgelist) VALUES (%s, %s, %s)"
     cur.execute(query, (user.username, user.password, user.ingr_list))
 
