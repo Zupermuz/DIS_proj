@@ -13,7 +13,7 @@
                 {% for ingredient in ingredients %}
                 <tr>
                   <td>{{ ingredient }} </td>
-                  <td> <a href="{{ url_for('views.ingr_remove', id='1', ingr_to_remove=ingredient) }}">remove</a></td>
+                  <td> <a href="{{ url_for('views.ingr_remove', ingr_to_remove=ingredient) }}">remove</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -21,8 +21,10 @@ def home():
             return redirect(url_for('views.home'))
     return render_template("home.html", ingredients = ingredients)
 
-@views.route('/<int:id>/<ingr_to_remove>/ingr_remove', methods=('GET', 'POST'))
-def ingr_remove(id, ingr_to_remove):
-    ingr_remove_command(id, ingr_to_remove)
+@views.route('/<ingr_to_remove>/ingr_remove', methods=('GET', 'POST'))
+@login_required
+def ingr_remove(ingr_to_remove):
+    user_id = current_user.get_id()
+    ingr_remove_command(user_id, ingr_to_remove)
     #flash('"{}" was successfully deleted!'.format(post['title']))
     return redirect(url_for('views.home'))
