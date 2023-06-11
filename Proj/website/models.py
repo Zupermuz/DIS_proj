@@ -7,7 +7,7 @@ from psycopg2 import sql
 def load_user(user_id):
     user_data = getUserDataById(user_id)
     if user_data:
-        return User(user_data['username'], user_data['password'], user_data['ingr_list'])
+        return User(user_data['usrname'], user_data['password'], user_data['ingr_list'])
     return None
     
     
@@ -43,7 +43,7 @@ def getUserDataById(user_id):
 def getIdForNewUser(user):
     cur = conn.cursor()
     
-    query = "SELECT usrid FROM users WHERE username = %s"
+    query = "SELECT usrid FROM users WHERE usrname = %s"
     cur.execute(query, (user.username,))
     id = cur.fetchone()
     user.id = id
@@ -52,7 +52,7 @@ def getIdForNewUser(user):
 def getUserByUsername(username):
     cur = conn.cursor()
     
-    query = "SELECT * FROM users WHERE username = %s"
+    query = "SELECT * FROM users WHERE usrname = %s"
     cur.execute(query, (username,))
     user = cur.fetchone()
     
