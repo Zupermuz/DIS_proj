@@ -18,11 +18,11 @@ Run the code below to install the necessary modules.
 ## Running flask
 ### The python way
 
-$ python3 run.py
+$ python3 main.py
 
 ### The flask way.
 
-$ export FLASK_APP=run.py
+$ export FLASK_APP=main.py
 
 $ export FLASK_DEBUG=1           (Replaces export FLASK_ENV=development)
 
@@ -60,7 +60,7 @@ $ pip install Flask
 
 Set environment variables and start flask
 
-$ export FLASK_APP=run.py
+$ export FLASK_APP=main.py
 
 $ export FLASK_DEBUG=1           (Replaces export FLASK_ENV=development)
 
